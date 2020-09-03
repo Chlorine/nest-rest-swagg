@@ -15,6 +15,7 @@ async function bootstrap() {
     .setTitle('Contracts example')
     .setDescription('Пример API по работе с некоторыми договорами')
     .setVersion('0.1')
+    .addBearerAuth() // всё по дефолту пусть, и просто закроем роуты через @UseGuards(JwtAuthGuard)
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

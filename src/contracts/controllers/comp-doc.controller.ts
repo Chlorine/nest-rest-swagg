@@ -8,10 +8,12 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOperation,
@@ -27,15 +29,18 @@ import { UpdateCompDocDto } from './dto/comp-doc.update.dto';
 import { CompletionDocument } from '../db/document';
 import { Utils } from '../../utils';
 import { Contract } from '../db/contract';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 /**
  * Контроллер для работы с объектами "Документ выполнения"
  */
+@ApiBearerAuth()
 @ApiTags('Документы выполнения')
 @Controller('comp-docs')
 export class CompDocController {
   constructor(private readonly cs: ContractsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Получение списка всех документов выполнения' })
   @ApiResponse({
@@ -47,6 +52,7 @@ export class CompDocController {
     return this.cs.getCompletionDocuments();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiImplicitParam({
     name: 'id',
@@ -66,6 +72,7 @@ export class CompDocController {
     return res;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(200)
   @ApiOperation({ summary: 'Добавление документа выполнения' })
@@ -87,6 +94,7 @@ export class CompDocController {
     return Utils.omitProps(cd, ['type', 'currency']) as CompletionDocument;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiImplicitParam({
     name: 'id',
@@ -112,6 +120,7 @@ export class CompDocController {
     return Utils.omitProps(cd, ['type', 'currency']) as CompletionDocument;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiImplicitParam({
     name: 'id',

@@ -47,6 +47,8 @@ export class ContractsService {
     private readonly invoiceRepo: Repository<Invoice>,
   ) {}
 
+  // ВАЛЮТЫ
+
   async getCurrencies(): Promise<Currency[]> {
     return this.currencyRepo.find();
   }
@@ -98,7 +100,7 @@ export class ContractsService {
     await this.currencyRepo.delete(id);
   }
 
-  //////////////////////////
+  // ТИПЫ ДОГОВОРОВ
 
   async getContractTypes() {
     return this.contractTypeRepo.find();
@@ -108,7 +110,7 @@ export class ContractsService {
     return this.contractTypeRepo.findOne({ id });
   }
 
-  ////////////////////////////
+  // ТИПЫ ДОКУМЕНТОВ ВЫПОЛНЕНИЯ
 
   async getCompletionDocumentTypes() {
     return this.compDocTypeRepo.find();
@@ -118,7 +120,7 @@ export class ContractsService {
     return this.compDocTypeRepo.findOne({ id });
   }
 
-  /////////////////////////////
+  // ЮРИДИЧЕСКИЕ ЛИЦА
 
   async getLegalEntities(): Promise<LegalEntity[]> {
     return this.legalEntityRepo.find();
@@ -157,7 +159,7 @@ export class ContractsService {
     await this.legalEntityRepo.delete(id);
   }
 
-  //////////////
+  // ДОГОВОРЫ
 
   async getContracts() {
     return this.contractRepo.find();
@@ -262,7 +264,7 @@ export class ContractsService {
     await this.contractRepo.delete(id);
   }
 
-  ////////
+  // ЭТАПЫ ДОГОВОРОВ
 
   async getContractStages(contractId: number): Promise<ContractStage[]> {
     return this.contractStageRepo.find({ contractId });
@@ -340,7 +342,7 @@ export class ContractsService {
     await this.contractStageRepo.delete(id);
   }
 
-  ////////
+  // ДОКУМЕНТЫ ВЫПОЛНЕНИЯ
 
   async getCompletionDocuments() {
     return this.compDocRepo.find();
@@ -408,7 +410,7 @@ export class ContractsService {
     await this.compDocRepo.delete(id);
   }
 
-  ////////////////
+  // ФАКТУРЫ
 
   async getInvoices(compDocId: number): Promise<Invoice[]> {
     return this.invoiceRepo.find({ completionDocumentId: compDocId });

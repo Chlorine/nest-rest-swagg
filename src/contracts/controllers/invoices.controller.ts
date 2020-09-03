@@ -8,10 +8,12 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOperation,
@@ -27,11 +29,13 @@ import { UpdateInvoiceDto } from './dto/invoice.update.dto';
 import { Invoice } from '../db/invoice';
 import { Utils } from '../../utils';
 import { doc } from 'prettier';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 /**
  * Контроллер для работы с объектами "Фактура"
  *
  */
+@ApiBearerAuth()
 @ApiTags('Фактуры по документам')
 @Controller('comp-docs/:documentId')
 export class InvoicesController {
@@ -41,6 +45,7 @@ export class InvoicesController {
    * GET ALL
    */
 
+  @UseGuards(JwtAuthGuard)
   @Get('invoices')
   @ApiImplicitParam({
     name: 'documentId',
@@ -63,6 +68,7 @@ export class InvoicesController {
    * GET BY ID
    */
 
+  @UseGuards(JwtAuthGuard)
   @Get('invoices/:invoiceId')
   @ApiImplicitParam({
     name: 'documentId',
@@ -91,6 +97,7 @@ export class InvoicesController {
    * CREATE NEW
    */
 
+  @UseGuards(JwtAuthGuard)
   @Post('invoices')
   @ApiImplicitParam({
     name: 'documentId',
@@ -128,6 +135,7 @@ export class InvoicesController {
    * UPDATE
    */
 
+  @UseGuards(JwtAuthGuard)
   @Put('invoices/:invoiceId')
   @ApiImplicitParam({
     name: 'documentId',
@@ -168,6 +176,7 @@ export class InvoicesController {
    * REMOVE
    */
 
+  @UseGuards(JwtAuthGuard)
   @Delete('stages/:stageId')
   @ApiImplicitParam({
     name: 'documentId',

@@ -8,9 +8,11 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOperation,
@@ -26,14 +28,18 @@ import { UpdateCurrencyDto } from './dto/currency.update.dto';
 import { Currency } from '../db/currency';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+
 /**
  * Контроллер для работы с объектами "Валюты"
  */
 @ApiTags('Валюты')
+@ApiBearerAuth()
 @Controller('currencies')
 export class CurrenciesController {
   constructor(private readonly cs: ContractsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Получение списка всех валют' })
   @ApiResponse({
@@ -45,6 +51,7 @@ export class CurrenciesController {
     return this.cs.getCurrencies();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiImplicitParam({
     name: 'id',
@@ -64,6 +71,7 @@ export class CurrenciesController {
     return res;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(200)
   @ApiOperation({ summary: 'Добавление валюты' })
@@ -85,6 +93,7 @@ export class CurrenciesController {
     return currency;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiImplicitParam({
     name: 'id',
@@ -110,6 +119,7 @@ export class CurrenciesController {
     return currency;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiImplicitParam({
     name: 'id',

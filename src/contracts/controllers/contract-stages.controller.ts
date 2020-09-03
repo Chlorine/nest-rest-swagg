@@ -8,10 +8,12 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOperation,
@@ -29,6 +31,7 @@ import { Utils } from '../../utils';
 
 import { ContractStage } from '../db/contract-stage';
 import { Invoice } from '../db/invoice';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 /**
  * Контроллер для работы с объектами "Этапы договора"
@@ -38,6 +41,7 @@ import { Invoice } from '../db/invoice';
  * Теоретически у parent могут быть какие-нибудь права которые надо проверить перед операцией...
  *
  */
+@ApiBearerAuth()
 @ApiTags('Этапы договора')
 @Controller('contracts/:contractId')
 export class ContractStagesController {
@@ -47,6 +51,7 @@ export class ContractStagesController {
    * GET ALL
    */
 
+  @UseGuards(JwtAuthGuard)
   @Get('stages')
   @ApiImplicitParam({
     name: 'contractId',
@@ -69,6 +74,7 @@ export class ContractStagesController {
    * GET BY ID
    */
 
+  @UseGuards(JwtAuthGuard)
   @Get('stages/:stageId')
   @ApiImplicitParam({
     name: 'contractId',
@@ -101,6 +107,7 @@ export class ContractStagesController {
    * ФАКТУРЫ ПО ЭТАПУ
    */
 
+  @UseGuards(JwtAuthGuard)
   @Get('stages/:stageId/invoices')
   @ApiImplicitParam({
     name: 'contractId',
@@ -129,6 +136,7 @@ export class ContractStagesController {
    * CREATE NEW
    */
 
+  @UseGuards(JwtAuthGuard)
   @Post('stages')
   @ApiImplicitParam({
     name: 'contractId',
@@ -166,6 +174,7 @@ export class ContractStagesController {
    * UPDATE
    */
 
+  @UseGuards(JwtAuthGuard)
   @Put('stages/:stageId')
   @ApiImplicitParam({
     name: 'contractId',
@@ -206,6 +215,7 @@ export class ContractStagesController {
    * REMOVE
    */
 
+  @UseGuards(JwtAuthGuard)
   @Delete('stages/:stageId')
   @ApiImplicitParam({
     name: 'contractId',

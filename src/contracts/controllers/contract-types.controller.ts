@@ -1,6 +1,13 @@
-import { Controller, Get, HttpException, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 
 import {
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
@@ -11,15 +18,18 @@ import { ContractsService } from '../contracts.service';
 
 import { ContractType } from '../db/contract-type';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 /**
  * Контроллер для справочника типов договоров
  */
+@ApiBearerAuth()
 @ApiTags('Типы договоров')
 @Controller('contract-types')
 export class ContractTypesController {
   constructor(private readonly cs: ContractsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Получение списка всех типов договоров' })
   @ApiResponse({
@@ -31,6 +41,7 @@ export class ContractTypesController {
     return this.cs.getContractTypes();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiImplicitParam({
     name: 'id',

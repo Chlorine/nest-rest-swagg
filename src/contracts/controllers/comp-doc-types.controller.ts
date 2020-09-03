@@ -1,7 +1,14 @@
-import { Controller, Get, HttpException, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 
 import {
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
@@ -11,15 +18,18 @@ import {
 import { ContractsService } from '../contracts.service';
 
 import { CompletionDocumentType } from '../db/document-type';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 /**
  * Контроллер для справочника типов документов выполнения
  */
+@ApiBearerAuth()
 @ApiTags('Типы документов выполнения')
 @Controller('completion-document-types')
 export class CompDocTypesController {
   constructor(private readonly cs: ContractsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({
     summary: 'Получение списка всех типов документов выполнения',
@@ -33,6 +43,7 @@ export class CompDocTypesController {
     return this.cs.getCompletionDocumentTypes();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiImplicitParam({
     name: 'id',

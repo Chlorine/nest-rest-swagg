@@ -8,10 +8,12 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOperation,
@@ -25,15 +27,18 @@ import { CreateLegalEntityDto } from './dto/legal-entity.create.dto';
 import { UpdateLegalEntityDto } from './dto/legal-entity.update.dto';
 
 import { LegalEntity } from '../db/legal-entity';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 /**
  * Контроллер для работы с объектами "Юрлица"
  */
+@ApiBearerAuth()
 @ApiTags('Юридические лица')
 @Controller('legal-entities')
 export class LegalEntitiesController {
   constructor(private readonly cs: ContractsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Получение списка всех юрлиц' })
   @ApiResponse({
@@ -45,6 +50,7 @@ export class LegalEntitiesController {
     return this.cs.getLegalEntities();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiImplicitParam({
     name: 'id',
@@ -64,6 +70,7 @@ export class LegalEntitiesController {
     return res;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(200)
   @ApiOperation({ summary: 'Добавление юрлица' })
@@ -85,6 +92,7 @@ export class LegalEntitiesController {
     return le;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiImplicitParam({
     name: 'id',
@@ -110,6 +118,7 @@ export class LegalEntitiesController {
     return le;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiImplicitParam({
     name: 'id',

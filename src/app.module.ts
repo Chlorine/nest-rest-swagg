@@ -13,8 +13,10 @@ import { ContractStage } from './contracts/db/contract-stage';
 import { CompletionDocument } from './contracts/db/document';
 import { CompletionDocumentType } from './contracts/db/document-type';
 import { Invoice } from './contracts/db/invoice';
+import { User } from './contracts/db/user';
 
 import { ContractsModule } from './contracts/contracts.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -44,12 +46,14 @@ import { ContractsModule } from './contracts/contracts.module';
             CompletionDocument,
             CompletionDocumentType,
             Invoice,
+            User,
           ],
           synchronize: true,
         };
       },
     }),
     ContractsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

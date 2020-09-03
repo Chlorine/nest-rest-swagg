@@ -8,10 +8,12 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOperation,
@@ -26,15 +28,18 @@ import { UpdateContractDto } from './dto/contract.update.dto';
 
 import { Contract } from '../db/contract';
 import { Utils } from '../../utils';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 /**
  * Контроллер для работы с объектами "Договора"
  */
+@ApiBearerAuth()
 @ApiTags('Договоры')
 @Controller('contracts')
 export class ContractsController {
   constructor(private readonly cs: ContractsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Получение списка всех договоров' })
   @ApiResponse({
@@ -46,6 +51,7 @@ export class ContractsController {
     return this.cs.getContracts();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiImplicitParam({
     name: 'id',
@@ -65,6 +71,7 @@ export class ContractsController {
     return res;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(200)
   @ApiOperation({ summary: 'Добавление договора' })
@@ -93,6 +100,7 @@ export class ContractsController {
     ]) as Contract;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiImplicitParam({
     name: 'id',
@@ -123,6 +131,7 @@ export class ContractsController {
     ]) as Contract;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiImplicitParam({
     name: 'id',

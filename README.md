@@ -29,3 +29,13 @@ insert into CurrencyInfo (code, digitCode, name) values ('RUB', 643, 'Росси
 swagger ui на http://localhost:3000/api
 
 Сейчас захардкодено 'mssql' в ините typeorm. Скорее всего, взлетит и на другой субд (если совсем без базы, то не увидим swagger ui).
+
+#### Про авторизацию
+
+Добавлен совсем простенький механизм авторизации
+
+```
+insert into UserInfo (username, password) values ('superadmin', '1234')
+```
+
+В swagger-ui нужно выполнить /auth/login и потом скопипастить access_token из респонса в окошко авторизации 
